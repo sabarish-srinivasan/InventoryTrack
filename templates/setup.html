@@ -1,0 +1,40 @@
+
+<body>
+<h1>Add Inventory Item</h1>
+<form method="POST" action="/">
+  <input type="text" name="item_name">
+  <input type="submit" value="Add">
+</form>
+
+<h1>Inventory Items</h1>
+<table>
+  {% for inventory_item in items %}
+  <tr>
+    <td>
+      {{inventory_item.item_name}}
+    </td>
+    <td>
+      <form method="POST" action="./update" style="display: inline">
+        <input type="hidden" value="{{inventory_item.item_name}}" name="old_item">
+        <input type="text" value="{{inventory_item.item_name}}" name="new_item">
+        <input type="submit" value="Update">
+      </form>
+    </td>
+    <td>
+      <form method="POST" action="./delete" style="display: inline">
+        <input type="hidden" value="{{inventory_item.item_name}}" name="item_name">
+        <input type="submit" value="Delete">
+        <input value="{{inventory_item.del_comment}}" id="del" name="del_comment">
+        <label for="del">Deletion Comment</label><br>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h1>Undelete Last Inventory Deletion</h1>
+<form method="POST" action="./undelete">
+  <input type="hidden" name="item_to_undelete">
+  <input type="submit" value="Undelete">
+</form>
+  </body>
