@@ -1,12 +1,11 @@
 import os
-
 from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import request
-
 from flask_sqlalchemy import SQLAlchemy
 
+# Initialize flask application and database
 directory = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(directory, "inventory_database.db"))
 
@@ -24,6 +23,7 @@ class InventoryItem(database.Model):
         return "<Item: {}>".format(self.item_name)
 
 
+# Add inventory items to database
 @app.route('/', methods=["GET", "POST"])
 def main():
     items = None
@@ -39,6 +39,7 @@ def main():
     return render_template("setup.html", items=items)
 
 
+# Update inventory items in database
 @app.route("/update", methods=["POST"])
 def update():
     try:
@@ -53,6 +54,7 @@ def update():
     return redirect("/")
 
 
+# Delete inventory items from database
 @app.route("/delete", methods=["POST"])
 def delete():
     item_name = request.form.get("item_name")
@@ -65,6 +67,7 @@ def delete():
     return render_template("setup.html", items=items)
 
 
+# Undelete last inventory item deleted from database
 @app.route("/undelete", methods=["POST"])
 def undelete():
     item_to_undelete = InventoryItem.query.filter_by(del_flag=True).first()
